@@ -1,6 +1,7 @@
 import { RealtimeChannel, Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { supaClient } from "./supa-client";
+import { useNavigate } from "react-router-dom";
 
 export interface UserProfile {
   username: string;
@@ -18,6 +19,7 @@ export function useSession(): SupashipUserInfo {
     session: null,
   });
   const [channel, setChannel] = useState<RealtimeChannel | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     void supaClient.auth.getSession().then(({ data: { session } }) => {
@@ -44,11 +46,7 @@ export function useSession(): SupashipUserInfo {
       void channel?.unsubscribe();
       setChannel(null);
     }
-  }, [userInfo.session]); //eslint-disable-line react-hooks/exhaustive-deps
-  /* Study Question:
-     How do I add channel and userInfo as dependencies (as the eslint rule suggests
-     I should) if I don't want them to trigger the callback?
-  */
+  }, [userInfo.session]);
 
   async function listenToUserProfileChanges(userId: string) {
     const { data } = await supaClient
@@ -57,6 +55,9 @@ export function useSession(): SupashipUserInfo {
       .filter("user_id", "eq", userId);
     if (data?.[0]) {
       setUserInfo({ ...userInfo, profile: data?.[0] as UserProfile });
+    } else {
+      setReturnPath();
+      navigate("/welcome");
     }
     return supaClient
       .channel("public:user_profiles")
@@ -77,3 +78,7 @@ export function useSession(): SupashipUserInfo {
 
   return userInfo;
 }
+
+export const setReturnPath = () => {
+  localStorage.setItem("returnPath", window.location.pathname);
+};

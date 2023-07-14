@@ -30,6 +30,7 @@ test.describe("User auth", () => {
   }) => {
     await signUp(page, userEmail, userPassword, userName);
     const newTab = await context.newPage();
+    await newTab.goto("http://localhost:1337");
     const logoutButton = newTab.locator("button", { hasText: "Logout" });
     await expect(logoutButton).toHaveCount(1);
   });
@@ -160,6 +161,8 @@ test.describe("User auth", () => {
       hasText: "Welcome to Supaship!",
     });
     await expect(welcomeHeader).toHaveCount(1);
-    await expect(validation).toHaveText(`Username "testuser" is already taken`);
+    await expect(validation).toHaveText(
+      `Username "${userName}" is already taken`
+    );
   });
 });

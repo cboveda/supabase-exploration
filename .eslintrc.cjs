@@ -23,6 +23,7 @@ module.exports = {
       { allowConstantExport: true },
     ],
     "@typescript-eslint/no-non-null-assertion": "off",
+    "react-hooks/exhaustive-deps": "off",
   },
   ignorePatterns: [
     ".eslintrc.cjs",
