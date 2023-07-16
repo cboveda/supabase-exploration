@@ -36,7 +36,7 @@ create table post_votes (
 
 create function initialize_post_score()
 returns trigger
-language plpsql
+language plpgsql
 security definer
 set search_path = public 
 as $initialize_post_score$
@@ -53,7 +53,7 @@ create trigger initialize_post_score
 
 create function update_post_score()
 returns trigger
-language plpsql
+language plpgsql
 security definer
 set search_path = public
 as $update_post_score$
@@ -82,7 +82,7 @@ returns table (
   score int,
   username text
 )
-language plpsql
+language plpgsql
 as $$
 begin
   return query
@@ -97,7 +97,7 @@ begin
   offset (page_number - 1) * 10;
 end $$;
 
-crete function get_single_post_with_comments(post_id uuid)
+create function get_single_post_with_comments(post_id uuid)
 returns table (
   id uuid,
   author_name text,
@@ -107,7 +107,7 @@ returns table (
   score int,
   path ltree
 )
-language plpsql
+language plpgsql
 as $$
 begin
   return query
@@ -122,7 +122,7 @@ end;$$;
 
 create function create_new_post(userId uuid, title text, content text)
 returns boolean
-language plpsql
+language plpgsql
 as $$
 begin
   with
@@ -138,7 +138,7 @@ end;$$;
 
 create function create_new_comment(userId uuid, content text, path ltree)
 returns boolean
-language plpsql
+language plpgsql
 as $$
 begin
   with
