@@ -2,7 +2,7 @@ import "./App.css";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import MessageBoard from "./MessageBoard";
 import AllPosts from "./AllPosts";
-import PostView from "./PostView";
+import { PostView } from "./Post";
 import Welcome from "./Welcome";
 import { welcomeLoader } from "./welcome-loader";
 import NavBar from "./NavBar";

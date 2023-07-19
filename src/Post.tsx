@@ -130,7 +130,7 @@ function PostPresentation({
     <div className="post-detail-outer-container">
       <div className="post-detail-inner-container">
         <div className="post-detail-upvote-container">
-          <Upvote
+          <UpVote
             direction="up"
             filled={
               postDetailData.myVotes &&
@@ -155,7 +155,7 @@ function PostPresentation({
           <p className="text-center" data-e2e="upvote-count">
             {score}
           </p>
-          <Upvote
+          <UpVote
             direction="down"
             filled={
               postDetailData.myVotes &&
