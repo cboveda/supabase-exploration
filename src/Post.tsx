@@ -138,18 +138,20 @@ function PostPresentation({
               postDetailData.myVotes[postDetailData.post.id] === "up"
             }
             enabled={!!userContext.session}
-            onClick={async () => {
-              if (!postDetailData.post) {
-                return;
-              }
-              await castVote({
-                postId: postDetailData.post.id,
-                userId: userContext.session?.user.id,
-                voteType: "up",
-                onSuccess: () => {
-                  setBumper(bumper + 1);
-                },
-              });
+            onClick={() => {
+              void (async () => {
+                if (!postDetailData.post) {
+                  return;
+                }
+                await castVote({
+                  postId: postDetailData.post.id,
+                  userId: userContext.session?.user.id || "",
+                  voteType: "up",
+                  onSuccess: () => {
+                    setBumper(bumper + 1);
+                  },
+                });
+              })();
             }}
           />
           <p className="text-center" data-e2e="upvote-count">
@@ -163,18 +165,20 @@ function PostPresentation({
               postDetailData.myVotes[postDetailData.post.id] === "down"
             }
             enabled={!!userContext.session}
-            onClick={async () => {
-              if (!postDetailData.post) {
-                return;
-              }
-              await castVote({
-                postId: postDetailData.post.id,
-                userId: userContext.session?.user.id as string,
-                voteType: "down",
-                onSuccess: () => {
-                  setBumper(bumper + 1);
-                },
-              });
+            onClick={() => {
+              void (async () => {
+                if (!postDetailData.post) {
+                  return;
+                }
+                await castVote({
+                  postId: postDetailData.post.id,
+                  userId: userContext.session?.user.id as string,
+                  voteType: "down",
+                  onSuccess: () => {
+                    setBumper(bumper + 1);
+                  },
+                });
+              })();
             }}
           />
         </div>
@@ -219,7 +223,7 @@ function CommentView({
   onVoteSuccess,
 }: {
   comment: Comment;
-  myVotes: Record<string, VoteRecord>;
+  myVotes: Record<string, VoteRecord> | undefined;
   onVoteSuccess: () => void;
 }) {
   const score = usePostScore(comment.id, comment.score);
@@ -237,15 +241,17 @@ function CommentView({
               direction="up"
               filled={myVotes?.[comment.id] === "up"}
               enabled={!!session}
-              onClick={async () => {
-                await castVote({
-                  postId: comment.id,
-                  userId: session?.user.id as string,
-                  voteType: "up",
-                  onSuccess: () => {
-                    onVoteSuccess();
-                  },
-                });
+              onClick={() => {
+                void (async () => {
+                  await castVote({
+                    postId: comment.id,
+                    userId: session?.user.id as string,
+                    voteType: "up",
+                    onSuccess: () => {
+                      onVoteSuccess();
+                    },
+                  });
+                })();
               }}
             />
             <p className="text-center" data-e2e="upvote-count">
@@ -255,15 +261,17 @@ function CommentView({
               direction="down"
               filled={myVotes?.[comment.id] === "down"}
               enabled={!!session}
-              onClick={async () => {
-                await castVote({
-                  postId: comment.id,
-                  userId: session?.user.id as string,
-                  voteType: "down",
-                  onSuccess: () => {
-                    onVoteSuccess();
-                  },
-                });
+              onClick={() => {
+                void (async () => {
+                  await castVote({
+                    postId: comment.id,
+                    userId: session?.user.id as string,
+                    voteType: "down",
+                    onSuccess: () => {
+                      onVoteSuccess();
+                    },
+                  });
+                })();
               }}
             />
           </div>

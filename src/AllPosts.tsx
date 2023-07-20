@@ -54,7 +54,7 @@ export default function AllPosts() {
         />
       )}
       <div className="posts-container">
-        {posts?.map((post, i) => (
+        {posts?.map((post) => (
           <Post
             key={post.id}
             postData={post}
@@ -87,15 +87,17 @@ function Post({
           direction="up"
           filled={myVote === "up"}
           enabled={!!session}
-          onClick={async () => {
-            await castVote({
-              postId: postData.id,
-              userId: session?.user.id as string,
-              voteType: "up",
-              onSuccess: () => {
-                onVoteSuccess();
-              },
-            });
+          onClick={() => {
+            void (async () => {
+              await castVote({
+                postId: postData.id,
+                userId: session?.user.id as string,
+                voteType: "up",
+                onSuccess: () => {
+                  onVoteSuccess();
+                },
+              });
+            })();
           }}
         />
         <p className="text-center" data-e2e="upvote-count">
@@ -105,15 +107,17 @@ function Post({
           direction="down"
           filled={myVote === "down"}
           enabled={!!session}
-          onClick={async () => {
-            await castVote({
-              postId: postData.id,
-              userId: session?.user.id as string,
-              voteType: "down",
-              onSuccess: () => {
-                onVoteSuccess();
-              },
-            });
+          onClick={() => {
+            void (async () => {
+              await castVote({
+                postId: postData.id,
+                userId: session?.user.id as string,
+                voteType: "down",
+                onSuccess: () => {
+                  onVoteSuccess();
+                },
+              });
+            })();
           }}
         />
       </div>
