@@ -19,7 +19,7 @@ export async function castVote({
       user_id: userId,
       vote_type: voteType,
     },
-    { onConflict: "post_id,user_id" }
+    { onConflict: "post_id, user_id" }
   );
   onSuccess();
 }

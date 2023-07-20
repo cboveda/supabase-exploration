@@ -144,7 +144,7 @@ function PostPresentation({
               }
               await castVote({
                 postId: postDetailData.post.id,
-                userid: userContext.session?.user.id as string,
+                userId: userContext.session?.user.id,
                 voteType: "up",
                 onSuccess: () => {
                   setBumper(bumper + 1);
@@ -169,7 +169,7 @@ function PostPresentation({
               }
               await castVote({
                 postId: postDetailData.post.id,
-                userid: userContext.session?.user.id as string,
+                userId: userContext.session?.user.id as string,
                 voteType: "down",
                 onSuccess: () => {
                   setBumper(bumper + 1);
@@ -332,7 +332,7 @@ function CreateComment({
             .rpc("create_new_comment", {
               userid: user.session?.user.id || "",
               content: comment,
-              path: `${parent.path}.${parent.id.replace(/_/g, "-")}`,
+              path: `${parent.path}.${parent.id.replace(/-/g, "_")}`,
             })
             .then(({ error }) => {
               if (error) {

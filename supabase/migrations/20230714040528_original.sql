@@ -115,7 +115,7 @@ begin
   from posts
   join user_profiles on posts.user_id = user_profiles.user_id
   join post_contents on posts.id = post_contents.post_id
-  join post_score on posts.id = post_contents.post_id
+  join post_score on posts.id = post_score.post_id
   where posts.id = $1
   or posts.path <@ text2ltree(concat('root.', replace(concat($1, ''), '-', '_')));
 end;$$;
@@ -136,7 +136,7 @@ begin
   return true;
 end;$$;
 
-create function create_new_comment(userId uuid, content text, path ltree)
+create function create_new_comment(userid uuid, content text, path ltree)
 returns boolean
 language plpgsql
 as $$
@@ -202,7 +202,7 @@ WITH CHECK (auth.uid()=user_id);
 CREATE POLICY "owners can update" ON "public"."post_votes"
 AS PERMISSIVE FOR UPDATE
 TO public
-USING (auth.uid() =user_id)
+USING (auth.uid()=user_id)
 WITH CHECK (auth.uid()=user_id);
 
 CREATE POLICY "all can see" ON "public"."posts"
